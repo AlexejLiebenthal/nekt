@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta7
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: server
+      context: server
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        infer: [src/**/*.ts]
+    - image: client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        infer: ["**/*.ts", "**/*.tsx", "**/*.js"]
